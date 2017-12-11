@@ -8,17 +8,17 @@ import android.widget.TextView;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
 
-    private long maxNum = 99999;
-    private long minNum = 10000;
+    private long maxNum;
+    private long minNum;
 
 
-    public long firstPalindrom = maxNum;
-    public long secondPalindrom = maxNum;
-
-    private long dividerNumMax = 0;
     private long firstPrimeNum;
     private long secondPrimeNum;
+
+    private long dividerNumMax = 0;
+
     private long biggestPalindrom;
+    boolean isNotMaxPalind;
 
     private TextView tv1;
     private TextView tv2;
@@ -39,13 +39,19 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         Button btnStart = (Button) findViewById(R.id.button);
         btnStart.setOnClickListener(this);
 
+        isNotMaxPalind = true;
+
+        firstPrimeNum = maxNum;
+        secondPrimeNum = maxNum;
+
+        if (biggestPalindrom <= 100000000) {
+            biggestPalindrom = 100000000;
+        }
+
         findMinNum();
         findMaxNum();
 
-        findFirstPrimeNum();
-        findSecondPrimeNum();
 
-        multipleOfPrime();
 
     }
 
@@ -53,7 +59,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     public void onClick(View v) {
 
         multipleOfPrime();
-        fillLayout();
+
 
     }
 
@@ -99,7 +105,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             biggestPalindrom = resultOfMath;
             firstPrimeNum = firstPrime;
             secondPrimeNum = secondPrime;
-
         }
     }
 
@@ -112,34 +117,29 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         maxNum = 99999;
     }
 
-
-    public void findFirstPrimeNum() {
-    }
-
-    public void findSecondPrimeNum() {
-    }
-
     public void multipleOfPrime() {
 
-        boolean isNotMaxPalind = true;
+        isNotMaxPalind = true;
 
 
         while (isNotMaxPalind) {
-            if (firstPalindrom == maxNum && secondPalindrom == maxNum) {
-                firstPalindrom = findNextPrimeNum(maxNum);
-                secondPalindrom = findNextPrimeNum(firstPalindrom - 2);
-                findPalindrome(firstPalindrom, secondPalindrom);
+            if (firstPrimeNum == maxNum && secondPrimeNum == maxNum) {
+                firstPrimeNum = findNextPrimeNum(maxNum);
+                secondPrimeNum = findNextPrimeNum(firstPrimeNum);
+                findPalindrome(firstPrimeNum, secondPrimeNum);
 
-            } else if (secondPalindrom <= firstPalindrom && secondPalindrom > minNum) {
-                secondPalindrom = findNextPrimeNum(secondPalindrom - 2);
-                findPalindrome(firstPalindrom, secondPalindrom);
+            } else if (secondPrimeNum <= firstPrimeNum && secondPrimeNum > minNum) {
+                secondPrimeNum = findNextPrimeNum(secondPrimeNum - 2);
+                findPalindrome(firstPrimeNum, secondPrimeNum);
 
-            } else if (secondPalindrom <= minNum) {
-                firstPalindrom = findNextPrimeNum(firstPalindrom - 2);
-                secondPalindrom = firstPalindrom;
+            } else if (secondPrimeNum <= minNum) {
+                firstPrimeNum = findNextPrimeNum(firstPrimeNum - 2);
+                secondPrimeNum = firstPrimeNum;
 
-            } else if (firstPalindrom <= minNum) {
+            } else if (firstPrimeNum <= minNum) {
+
                 isNotMaxPalind = false;
+                fillLayout();
             }
 
         }
