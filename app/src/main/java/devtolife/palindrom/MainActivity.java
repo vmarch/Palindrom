@@ -119,25 +119,24 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     public void multipleOfPrime() {
 
-        isNotMaxPalind = true;
-
-
         while (isNotMaxPalind) {
             if (firstPrimeNum == maxNum && secondPrimeNum == maxNum) {
                 firstPrimeNum = findNextPrimeNum(maxNum);
                 secondPrimeNum = findNextPrimeNum(firstPrimeNum);
                 findPalindrome(firstPrimeNum, secondPrimeNum);
+                isNotMaxPalind = true;
 
             } else if (secondPrimeNum <= firstPrimeNum && secondPrimeNum > minNum) {
                 secondPrimeNum = findNextPrimeNum(secondPrimeNum - 2);
                 findPalindrome(firstPrimeNum, secondPrimeNum);
+                isNotMaxPalind = true;
 
             } else if (secondPrimeNum <= minNum) {
                 firstPrimeNum = findNextPrimeNum(firstPrimeNum - 2);
                 secondPrimeNum = firstPrimeNum;
+                isNotMaxPalind = true;
 
             } else if (firstPrimeNum <= minNum) {
-
                 isNotMaxPalind = false;
                 fillLayout();
             }
