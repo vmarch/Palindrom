@@ -12,9 +12,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private int minNum;
 
 
-    private int firstPrimeNum;
-    private int secondPrimeNum;
-
     private int dividerNumMax = 0;
 
     private long biggestPalindrom;
@@ -23,7 +20,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private TextView tv2;
     private TextView tv3;
     private TextView tv4;
-
+    private int firstPrimeNumPal;
+    private int secondPrimeNumPal;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,11 +36,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         btnStart.setOnClickListener(this);
 
         isNotMaxPalind = true;
-        findMinNum();
-        findMaxNum();
-
-        firstPrimeNum = maxNum;
-        secondPrimeNum = maxNum;
+//        findMinNum();
+//        findMaxNum();
+//
+//        firstPrimeNum = maxNum;
+//        secondPrimeNum = maxNum;
 
         if (biggestPalindrom <= 100000000) {
             biggestPalindrom = 100000000;
@@ -87,6 +85,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     public void multipleOfPrime() {
 
+        int firstPrimeNum = 99999;
+        int secondPrimeNum = 10000;
+
         while (isNotMaxPalind) {
             if (firstPrimeNum == maxNum && secondPrimeNum == maxNum) {
 
@@ -100,7 +101,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 findPalindrome(firstPrimeNum, secondPrimeNum);
                 secondPrimeNum = secondPrimeNum - 2;
 
-
             } else if (secondPrimeNum <= minNum) {
                 firstPrimeNum = findNextPrimeNum(firstPrimeNum - 2);
                 secondPrimeNum = firstPrimeNum;
@@ -113,37 +113,40 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         }
 
     }
-
-    public void findMinNum() {
-        minNum = 10000;
-    }
-
-    public void findMaxNum() {
-        maxNum = 99999;
-    }
+//
+//    public void findMinNum() {
+//        minNum = 10000;
+//    }
+//
+//    public void findMaxNum() {
+//        maxNum = 99999;
+//    }
 
     public void findDividerNumMax(long maxNumPreD) {
 
         dividerNumMax = (int) Math.sqrt(maxNumPreD);
     }
 
-    private void findPalindrome(int firstPrime, int secondPrime) {
+    private void findPalindrome(int firstPrimePal, int secondPrimePal) {
 
-        long resultOfMath = firstPrime * secondPrime;
+        long resultOfMath = firstPrimePal * secondPrimePal;
 
         String ltrResult = Long.toString(resultOfMath);
         String rtlResult = new StringBuilder(ltrResult).reverse().toString();
 
         if (ltrResult.equals(rtlResult) && resultOfMath > biggestPalindrom) {
             biggestPalindrom = resultOfMath;
-            firstPrimeNum = firstPrime;
-            secondPrimeNum = secondPrime;
+            firstPrimeNumPal = firstPrimePal;
+            secondPrimeNumPal = secondPrimePal;
+            ltrResult = null;
+            rtlResult = null;
+            resultOfMath = 0;
         }
     }
 
     public void fillLayout() {
-        tv2.setText("1-st primary number: " + firstPrimeNum);
-        tv3.setText("2-nd primary number: " + secondPrimeNum);
+        tv2.setText("1-st primary number: " + firstPrimeNumPal);
+        tv3.setText("2-nd primary number: " + secondPrimeNumPal);
         tv4.setText("1-st * 2-nd = " + biggestPalindrom);
     }
 }
