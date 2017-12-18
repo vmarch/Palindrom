@@ -8,14 +8,11 @@ import android.widget.TextView;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
 
-    private int maxNum;
-    private int minNum;
+    int maxNumNew;
 
-
-    private int dividerNumMax = 0;
+    private int dividerNumMax;
 
     private long biggestPalindrom;
-    boolean isNotMaxPalind;
 
     private TextView tv2;
     private TextView tv3;
@@ -35,17 +32,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         Button btnStart = (Button) findViewById(R.id.button);
         btnStart.setOnClickListener(this);
 
-        isNotMaxPalind = true;
-//        findMinNum();
-//        findMaxNum();
-//
-//        firstPrimeNum = maxNum;
-//        secondPrimeNum = maxNum;
-
-        if (biggestPalindrom <= 100000000) {
-            biggestPalindrom = 100000000;
-        }
-
+        biggestPalindrom = 0;
     }
 
     @Override
@@ -53,19 +40,20 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         multipleOfPrime();
 
-
     }
 
-    private int findNextPrimeNum(int previousNum) {
+    private void findNextPrimeNum(int previousNum) {
         int i;
         int j;
         int z;
-        int maxNumNew;
+        maxNumNew = previousNum;
 
         findDividerNumMax(previousNum);
 
-        for (i = previousNum; i >= minNum; i = i - 2) {
-
+        for (i = previousNum; i >= 10000; i = i - 2) {
+            if (maxNumNew != previousNum && maxNumNew > 10000) {
+                break;
+            }
             for (j = 3; j <= dividerNumMax; j++) {
 
                 z = i % j;
@@ -75,52 +63,43 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
                 } else if (z != 0 && j >= dividerNumMax) {
                     maxNumNew = i;
-                    return maxNumNew;
+                    break;
                 }
             }
         }
-        return 1;
     }
 
 
     public void multipleOfPrime() {
-
+        boolean isNotMaxPalind = true;
         int firstPrimeNum = 99999;
-        int secondPrimeNum = 10000;
+        int secondPrimeNum = 99999;
 
         while (isNotMaxPalind) {
-            if (firstPrimeNum == maxNum && secondPrimeNum == maxNum) {
 
-                firstPrimeNum = findNextPrimeNum(maxNum);
-                secondPrimeNum = firstPrimeNum;
+            if (secondPrimeNum < firstPrimeNum && secondPrimeNum > 10000) {
+                findNextPrimeNum(secondPrimeNum);
+                secondPrimeNum = maxNumNew;
                 findPalindrome(firstPrimeNum, secondPrimeNum);
                 secondPrimeNum = secondPrimeNum - 2;
 
-            } else if (secondPrimeNum <= firstPrimeNum && secondPrimeNum > minNum) {
-                secondPrimeNum = findNextPrimeNum(secondPrimeNum);
-                findPalindrome(firstPrimeNum, secondPrimeNum);
-                secondPrimeNum = secondPrimeNum - 2;
-
-            } else if (secondPrimeNum <= minNum) {
-                firstPrimeNum = findNextPrimeNum(firstPrimeNum - 2);
+            } else if (secondPrimeNum < firstPrimeNum && secondPrimeNum <= 10000) {
                 secondPrimeNum = firstPrimeNum;
 
-            } else if (firstPrimeNum <= minNum) {
+            } else if (firstPrimeNum == secondPrimeNum && secondPrimeNum > 10000) {
+                findNextPrimeNum(secondPrimeNum);
+                firstPrimeNum = maxNumNew;
+                secondPrimeNum = maxNumNew;
+                findPalindrome(firstPrimeNum, secondPrimeNum);
+                secondPrimeNum = maxNumNew - 2;
 
+            } else if (firstPrimeNum <= 10000) {
+                isNotMaxPalind = false;
                 fillLayout();
+
             }
-
         }
-
     }
-//
-//    public void findMinNum() {
-//        minNum = 10000;
-//    }
-//
-//    public void findMaxNum() {
-//        maxNum = 99999;
-//    }
 
     public void findDividerNumMax(long maxNumPreD) {
 
@@ -129,7 +108,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     private void findPalindrome(int firstPrimePal, int secondPrimePal) {
 
-        long resultOfMath = firstPrimePal * secondPrimePal;
+        long resultOfMath = (long) firstPrimePal * (long) secondPrimePal;
 
         String ltrResult = Long.toString(resultOfMath);
         String rtlResult = new StringBuilder(ltrResult).reverse().toString();
@@ -138,10 +117,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             biggestPalindrom = resultOfMath;
             firstPrimeNumPal = firstPrimePal;
             secondPrimeNumPal = secondPrimePal;
-            ltrResult = null;
-            rtlResult = null;
-            resultOfMath = 0;
         }
+
+        ltrResult = null;
+        rtlResult = null;
+        resultOfMath = 0;
     }
 
     public void fillLayout() {
